@@ -70,17 +70,6 @@ onMounted(async () => {
         <li>Vérifier plus tard qu’un contenu correspond exactement à l’original.</li>
       </ol>
     </article>
-
-    <article class="panel">
-      <p class="eyebrow">Intérêt pédagogique</p>
-      <h2>Pourquoi ce sujet fonctionne bien</h2>
-      <ul class="feature-list">
-        <li>API REST claire avec GET, POST et DELETE.</li>
-        <li>Persistance MongoDB entre les redémarrages.</li>
-        <li>Interface réactive avec plusieurs vues et état centralisé.</li>
-        <li>Sujet cryptographique adapté à une démonstration web.</li>
-      </ul>
-    </article>
   </section>
 
   <section class="records-section">
