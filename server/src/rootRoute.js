@@ -4,7 +4,14 @@
  */
 async function rootRoutes(fastify) {
   fastify.get('/', async (_request, _reply) => {
-    return { hello: 'world' }
+    return {
+      name: 'HashProof API',
+      status: 'ok',
+      endpoints: {
+        fingerprints: '/api/fingerprints',
+        stats: '/api/fingerprints/stats',
+      },
+    }
   })
 }
 

@@ -1,176 +1,138 @@
-# WebDev ESILV Starter
+# HashProof
 
-Starter de projet pour les étudiants de 4e année FinTech.
+HashProof est une application web de gestion d'empreintes cryptographiques. L'application permet d'enregistrer une empreinte `SHA-256` à partir d'un texte, de conserver cet enregistrement en base de données, puis de vérifier ultérieurement si un contenu correspond à l'empreinte de référence.
 
-Le dépôt est volontairement incomplet : il fournit une base de travail, une structure de monorepo, un front et un back séparés, mais il reste du travail d’implémentation. Le minimum attendu est d’implémenter tout ce qui est indiqué dans les `TODO` du projet.
+## Présentation
 
-## Architecture
+Le projet repose sur une architecture séparée frontend/backend :
 
-Ce projet suit une architecture de monorepo :
+- un frontend en Vue.js 3 pour l'interface utilisateur
+- un backend en Node.js avec Fastify pour l'API REST
+- une base MongoDB pour la persistance des données
 
-- `client/` contient l’application front-end
-- `server/` contient l’application back-end
-- `package.json` à la racine déclare les workspaces npm
-- `turbo.json` configure Turborepo pour orchestrer les scripts du monorepo
+L'objectif fonctionnel est de fournir une interface simple pour :
 
-### Monorepo
+- créer une empreinte via un formulaire
+- enregistrer des métadonnées associées au contenu
+- consulter les enregistrements existants
+- vérifier l'intégrité d'un texte à partir d'une empreinte déjà stockée
+- supprimer un enregistrement de l'archive
 
-Le dépôt utilise les [**npm workspaces**](https://docs.npmjs.com/cli/v7/using-npm/workspaces?v=true) pour gérer plusieurs applications dans un seul repository. Cela permet notamment :
+## Technologies
 
-- d’installer les dépendances depuis la racine
-- de lancer les scripts des sous-projets depuis un point central
-- de garder une structure claire entre front et back
+- Vue.js 3
+- Vite
+- Vue Router
+- Pinia
+- Node.js
+- Fastify
+- MongoDB
+- Mongoose
 
-### Workspaces npm
+## Fonctionnalités
 
-Les workspaces déclarés à la racine sont :
+- page d'accueil avec présentation et statistiques
+- page de création d'une empreinte
+- page d'archive avec filtrage et suppression
+- page de vérification d'intégrité
+- API REST avec routes `GET`, `POST` et `DELETE`
 
-- `client`
-- `server`
+## Structure du projet
 
-Les dépendances de chaque application restent isolées dans leur propre [`package.json`](https://docs.npmjs.com/cli/v11/configuring-npm/package-json), tandis que la racine pilote l’ensemble du dépôt.
-
-### Turborepo
-
-Le projet utilise [**Turborepo**](https://turborepo.dev/) pour orchestrer les tâches du monorepo.
-
-Exemple :
-
-```bash
-npm run dev
+```text
+.
+|- client/
+|- mongo-init/
+|- server/
+|- docker-compose.yml
+|- package.json
+`- turbo.json
 ```
 
-Cette commande exécute :
+## Variables d'environnement
 
-```bash
-turbo run dev --parallel
+### Backend
+
+Le backend utilise les variables suivantes :
+
+```env
+PORT=3000
+NODE_ENV=development
+MONGODB_URI=
+APP_BASE_URL=http://localhost:5173
+CLIENT_ORIGINS=http://localhost:5173
 ```
 
-Autrement dit, les scripts `dev` des workspaces sont lancés en parallèle.
+### Frontend
 
-## Applications
+Le frontend utilise la variable suivante :
 
-### Front-end : `client/`
-
-L’application front est basée sur :
-
-- [**Vue 3**](https://vuejs.org/) (version beta dans ce starter)
-- [**Vite**](https://vite.dev/) pour le bundling et le serveur de développement
-- [**Vue Router**](https://router.vuejs.org/) pour le routage
-- [**Pinia**](https://pinia.vuejs.org/) pour la gestion d’état
-- [**Vitest**](https://vitest.dev/) pour les tests unitaires
-- [**Playwright**](https://playwright.dev/) pour les tests end-to-end
-- [**ESLint**](https://eslint.org/), [**Oxlint**](https://oxc.rs/docs/guide/usage/linter) et [**Oxfmt**](https://oxc.rs/blog/2026-02-24-oxfmt-beta) pour la qualité et le formatage
-
-### Back-end : `server/`
-
-L’application back est actuellement basée sur :
-
-- [**Node.js**](https://nodejs.org/fr)
-- [**Fastify**](https://fastify.dev/) pour construire l’API HTTP
-
-Le serveur est lancé en mode développement avec :
-
-```bash
-node --watch src/index.js
+```env
+VITE_API_BASE_URL=http://localhost:3000
 ```
 
-Le back est conçu pour être enrichi pendant le projet : routes, logique métier, persistance, authentification, validation, gestion d’erreurs, etc.
+## Exécution locale
 
-## Prérequis
-
-Prérequits recommandés :
-
-- **Node.js 24 ou plus récent**
-- **npm** compatible avec la version de Node installée
-
-Pourquoi Node 24+ :
-
-- pour travailler avec une version moderne et homogène sur tout le projet
-- pour éviter les écarts d’environnement entre machines
-- pour bénéficier d’un runtime récent côté front comme côté back
-
-Vérification :
-
-```bash
-node -v
-npm -v
-```
-
-## Installation
-
-Depuis la racine du projet :
+Installation des dépendances :
 
 ```bash
 npm install
 ```
 
-Cette commande installe les dépendances du monorepo et des workspaces.
-
-## Lancement en développement
-
-Depuis la racine :
-
-```bash
-npm run dev
-```
-
-Cela lance les applications `client` et `server` en parallèle via Turborepo.
-
-Il est aussi possible de lancer une application individuellement depuis son dossier :
-
-```bash
-cd client
-npm run dev
-```
+Lancement du backend :
 
 ```bash
 cd server
 npm run dev
 ```
 
-## Ce qui est attendu
+Lancement du frontend :
 
-Ce dépôt est un **starter**, pas une application terminée.
+```bash
+cd client
+npm run dev
+```
 
-Vous devez au minimum :
+Le frontend est servi par Vite sur le port `5173` et l'API Fastify sur le port `3000`.
 
-- créer et remplir le fichier .env.development.local à partir de .env-example
-- implémenter tout ce qui est marqué `TODO`
-- compléter les routes, contrôleurs et services manquants
-- finaliser la logique métier côté back-end
-- structurer proprement les échanges entre front et back
-- ajouter les validations nécessaires
-- gérer correctement les erreurs
-- tester les comportements importants
-- modifier ce README.md pour enlever les instructions et ne garder que de la documentation de ce qui aura été fait
+## API
 
-Selon les consignes du module, vous pourrez aussi être amenés à :
+Routes principales :
 
-- implémenter l’authentification et l’autorisation
-- sécuriser les flux applicatifs
-- documenter vos choix techniques
+- `GET /api/fingerprints`
+- `GET /api/fingerprints/stats`
+- `GET /api/fingerprints/:id`
+- `POST /api/fingerprints`
+- `POST /api/fingerprints/:id/verify`
+- `DELETE /api/fingerprints/:id`
 
-## Conseils de travail
+## Déploiement
 
-- Travaillez par petites étapes validées.
-- Ne laissez pas les `TODO` s’accumuler jusqu’à la fin.
-- Gardez une séparation claire entre front (`client`) et back (`server`).
-- Faites évoluer le projet de manière cohérente avec la structure du monorepo.
+Le frontend est prévu pour un déploiement sur Netlify et le backend sur Render.
 
-## Structure du dépôt
+### Frontend
 
-```text
-.
-├── client/            # application front-end
-├── server/            # application back-end
-├── mongo-init/        # fichier de démarrage du conteneur mongodb (optionnel)
-├── .github/           # configuration pour copilot (et éventuellement plus tard pour les GHA)
-├── .vscode/           # configuration VSCode spécifique à ce projet
-├── package.json       # racine du monorepo
-├── eslint.config.mjs  # configuration du linter
-├── CLAUDE.md          # instructions spécifiques pour Claude Code (inclus les fichiers de copilote)
-├── AGENTS.md          # instructions spécifiques pour d’autres agents IA (inclus les fichiers de copilote)
-├── .editorconfig      # configuration basique des fichiers pour l’éditeur
-└── turbo.json         # orchestration des tâches
+- base directory : `client`
+- build command : `npm run build`
+- publish directory : `dist`
+
+Variable d'environnement :
+
+```env
+VITE_API_BASE_URL=https://<backend-render>
+```
+
+### Backend
+
+- root directory : `server`
+- build command : `npm install`
+- start command : `npm run start`
+
+Variables d'environnement :
+
+```env
+NODE_ENV=production
+MONGODB_URI=
+APP_BASE_URL=https://<frontend-netlify>
+CLIENT_ORIGINS=https://<frontend-netlify>
 ```
