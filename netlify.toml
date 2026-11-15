@@ -1,0 +1,14 @@
+# Vue (Vite) frontend deployed on Netlify
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA fallback: Vue Router uses HTML5 history mode (/archive, /verify/:id, ...)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

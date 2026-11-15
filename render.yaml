@@ -1,0 +1,21 @@
+# Fastify API deployed on Render (Blueprint)
+services:
+  - type: web
+    name: hashproof-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGODB_URI
+        sync: false
+      - key: CLIENT_ORIGINS
+        sync: false
+      - key: APP_BASE_URL
+        sync: false
