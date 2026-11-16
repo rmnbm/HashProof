@@ -7,7 +7,11 @@ describe('App', () => {
   it('mounts renders properly', () => {
     const wrapper = mount(App, {
       global: {
-        stubs: ['RouterLink', 'RouterView'],
+        stubs: {
+          // Render the link content so the brand title is visible.
+          RouterLink: { template: '<a><slot /></a>' },
+          RouterView: true,
+        },
       },
     })
 
